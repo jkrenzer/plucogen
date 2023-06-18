@@ -1,0 +1,14 @@
+{
+    "python.formatting.provider": "none",
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter"
+    },
+    "black-formatter.importStrategy": "fromEnvironment",
+    "evenBetterToml.formatter.alignComments": true,
+    "evenBetterToml.formatter.alignEntries": true,
+    "evenBetterToml.formatter.allowedBlankLines": 3,
+    "evenBetterToml.formatter.columnWidth": 60,
+    "evenBetterToml.formatter.arrayAutoCollapse": true
+}
