@@ -1,0 +1,59 @@
+[project]
+name = "plucogen"
+authors = [
+    { name = "Jörn Krenzer", email = "plucogen@joern,krenzer.space" },
+]
+description = "Pluggable universal code generator using dataformats like JSON and YAML to generate files with template languages like Jinja2."
+readme = "README.md"
+requires-python = ">=3.8"
+keywords = ["generator", "code"]
+license = { text = "LGPL-3.0-or-later" }
+classifiers = ["Programming Language :: Python :: 3"]
+dependencies = [
+    "configargparse",
+    "ruamel.yaml[jinja2]",
+    "Jinja2",
+    "jsonschema[format]",
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+develop = ["pylance"]
+test    = ["coverage", "pycotap"]
+
+
+[project.scripts]
+plucogen = "plucogen.__main__:main"
+
+[tool.poetry]
+name        = "plucogen"
+version     = "0.2.0"
+description = "Pluggable universal code generator using dataformats like JSON and YAML to generate files with template languages like Jinja2."
+authors     = ["Jörn Krenzer <plucogen@joern.krenzer.space>"]
+license     = "LGPL-3"
+readme      = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.8"
+ConfigArgParse = "^1.5.3"
+Jinja2 = "^3.1.2"
+jsonschema = { extras = ["format"], version = "^4.17.3" }
+"ruamel.yaml" = { extras = [
+    "jinja2",
+], version = "^0.17.32" }
+
+[tool.poetry.group.dev.dependencies]
+coverage = "^7.2.7"
+pycotap  = "^1.3.1"
+black    = "^23.3.0"
+
+[tool.poetry.scripts]
+plucogen = "plucogen.__main__:main"
+
+[tool.poetry.plugins]
+[tool.poetry.plugins."plucogen.plugin.generators"]
+"generatorArgParsers" = "plucogen.generators:generatorParsers"
+
+[build-system]
+requires      = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

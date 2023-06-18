@@ -1,0 +1,10 @@
+{
+    "recommendations": [
+        "tamasfe.even-better-toml",
+        "gitlab.gitlab-workflow",
+        "ms-python.vscode-pylance",
+        "ms-python.python",
+        "redhat.vscode-yaml",
+        "ms-python.black-formatter"
+    ]
+}

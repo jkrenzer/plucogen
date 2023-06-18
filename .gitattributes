@@ -1,0 +1,7 @@
+# Generally for the devcontainer's sake, use LF line endings
+
+* text=auto eol=lf
+
+# All shell scripts use LF line endings
+
+/scripts/* eol=lf

@@ -1,0 +1,22 @@
+---
+# YAML metadata
+successfully_loaded: true
+---
+list:
+{% for i in list -%}
+- {{ i }}
+{% endfor -%}
+test_successful: {{ "true" if Metadata.successfully_loaded else "false" }}
+---
+- invalid
+- and 
+- ignored
+- because
+- metadata
+- has
+- to 
+- have
+- a
+- root
+- dict
+---
