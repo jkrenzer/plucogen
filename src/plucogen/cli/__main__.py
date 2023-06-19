@@ -1,5 +1,5 @@
 from . import cli
-from . import logging
+from plucogen import logging
 
 log = logging.getLogger(__name__)
 

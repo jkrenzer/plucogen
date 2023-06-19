@@ -1,5 +1,5 @@
 import configargparse
-from . import logging, _module_name
+from plucogen import logging, _module_name
 
 log = logging.getLogger(__name__)
 

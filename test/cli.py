@@ -23,7 +23,7 @@ class TestCLI(unittest.TestCase):
             result_file,
             template_file,
         ]
-        return_code = plucogen.main(cli_args)
+        return_code = plucogen.cli.main(cli_args)
         self.assertEqual(return_code, 0)
         with open(result_file, "r") as result_descriptor, open(
             reference_file, "r"
