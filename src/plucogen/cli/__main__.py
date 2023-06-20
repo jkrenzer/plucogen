@@ -1,11 +1,11 @@
-from . import cli
+from .parser import parse_args
 from plucogen import logging
 
 log = logging.getLogger(__name__)
 
 
 def main(args=None):
-    options = cli.parse_args(args)
+    options = parse_args(args)
 
     # Set loglevel
     logging.basicConfig(level=logging.log_levels[options.log_level.lower()])
