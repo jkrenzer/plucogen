@@ -1,4 +1,7 @@
 from unittest import TestCase
+import os
+
+current_dir = os.path.dirname(__file__)
 
 
 class TestApiV0Interface(TestCase):
@@ -7,6 +10,21 @@ class TestApiV0Interface(TestCase):
 
         class MockInterface:
             name = "mock"
+
+        self.assertRaises(ImportError, register_api, MockInterface)
+
+    def test_wrong_interface_rejection(self):
+        from plucogen.api.v0 import register_api
+        from plucogen.api.v0.api import Interface
+        from abc import abstractmethod
+
+        class MockInterface(Interface):
+            name = "mock"
+            module = "__does.__not.__exist"
+
+            @abstractmethod
+            def test():
+                pass
 
         self.assertRaises(ImportError, register_api, MockInterface)
 
@@ -34,3 +52,11 @@ class TestApiV0Interface(TestCase):
         unregister_api(test_interface)
         with self.assertRaises(ImportError):
             from plucogen.api.v0.test import t as t3  # type: ignore
+
+    def test_consumer(self):
+        from plucogen.api.v0.consumer import file, Interface
+        from pathlib import Path
+
+        testFile = Path(current_dir) / "test_include.yaml"
+        input = Interface.InputData(options=None, resources=[testFile])
+        self.assertIsInstance(file.Interface.consume(input).data[0], str)
