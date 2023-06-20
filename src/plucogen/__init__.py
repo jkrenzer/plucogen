@@ -1,2 +1,2 @@
 _module_name = __name__
-from . import cli, logging, consumers, generators
+from . import api, cli, logging, consumers, generators
