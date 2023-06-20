@@ -1,4 +1,5 @@
-from plucogen import cli, logging
+from plucogen import logging
+from plucogen.cli import parser
 
 log = logging.getLogger(__name__)
 
@@ -9,7 +10,7 @@ def main(options):
     return 1
 
 
-generateSubParser = cli.subParsers.add_parser(
+generateSubParser = parser.subParsers.add_parser(
     "generate", help="render template files with data"
 )  # type: ignore
 
