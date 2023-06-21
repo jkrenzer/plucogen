@@ -5,7 +5,7 @@ from pathlib import PurePath, Path
 from os import path
 from typing import Union, Dict, List
 
-from plucogen.consumers.yaml import load_yaml_file
+from plucogen.handlers.yaml import load_yaml_file
 from plucogen.file import set_search_paths
 
 log = getLogger(__name__)
@@ -96,6 +96,7 @@ def main(options):
         search_paths=options.search_paths,
         data=options.data,
     )
+
 
 from plucogen.generators import generatorParsers
 

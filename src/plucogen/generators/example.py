@@ -1,12 +1,14 @@
 from plucogen.generators import generatorParsers
 from .. import logging
-from plucogen.consumers.yaml import tags
+from plucogen.handlers.yaml import tags
 
 log = logging.getLogger(__name__)
 
 
 def main(options):
-    log.warn("This is an example how to implement a new generator. It does nothing by design.")
+    log.warn(
+        "This is an example how to implement a new generator. It does nothing by design."
+    )
 
 
 ourParser = generatorParsers.add_parser("example")
