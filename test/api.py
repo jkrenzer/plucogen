@@ -1,4 +1,4 @@
-from unittest import TestCase
+from unittest import TestCase, expectedFailure
 import os
 
 current_dir = os.path.dirname(__file__)
@@ -6,7 +6,7 @@ current_dir = os.path.dirname(__file__)
 
 class TestApiV0Interface(TestCase):
     def test_wrong_interface_rejection(self):
-        from plucogen.api.v0 import register_api
+        from plucogen.api.v0.api import register_api
 
         class MockInterface:
             name = "mock"
@@ -14,11 +14,10 @@ class TestApiV0Interface(TestCase):
         self.assertRaises(ImportError, register_api, MockInterface)
 
     def test_wrong_interface_rejection(self):
-        from plucogen.api.v0 import register_api
-        from plucogen.api.v0.api import Interface
+        from plucogen.api.v0.api import register_api, InterfaceBase
         from abc import abstractmethod
 
-        class MockInterface(Interface):
+        class MockInterface(InterfaceBase):
             name = "mock"
             module = "__does.__not.__exist"
 
@@ -29,8 +28,7 @@ class TestApiV0Interface(TestCase):
         self.assertRaises(ImportError, register_api, MockInterface)
 
     def test_api_registration(self):
-        from plucogen.api.v0 import register_api, unregister_api
-        from plucogen.api.v0.api import Interface
+        from plucogen.api.v0.api import InterfaceBase, register_api, unregister_api
         from types import ModuleType
         import sys
 
@@ -39,7 +37,7 @@ class TestApiV0Interface(TestCase):
 
         m = ModuleType("mockTestModule")
 
-        test_interface = Interface(name="test", module=m)
+        test_interface = InterfaceBase(name="test", module=m)
 
         m.t = t
         sys.modules[m.__name__] = m
@@ -58,5 +56,27 @@ class TestApiV0Interface(TestCase):
         from pathlib import Path
 
         testFile = Path(current_dir) / "test_include.yaml"
-        input = Interface.InputData(options=None, resources=[testFile])
+        input = Interface.InputData(
+            options=None, resources=[testFile], return_code=0, messages=[]
+        )
         self.assertIsInstance(file.Interface.consume(input).data[0], str)
+
+    def test_base_apis_registered(self):
+        from plucogen.api.v0.api import Registry, InterfaceRegistry
+        from inspect import isabstract
+
+        self.assertTrue(issubclass(Registry, InterfaceRegistry))
+        self.assertFalse(isabstract(Registry))
+        mandatory_apis = {"cli", "consumer", "generator", "handler", "writer"}
+        for a in mandatory_apis:
+            with self.subTest("Checking API %s registered" % a, api=a):
+                self.assertTrue(
+                    Registry.is_available(a), "Mandatory API %s not registered!" % a
+                )
+
+    def test_entrypoint_generation(self):
+        from plucogen.api.v0.api import entrypoints as e1
+        from plucogen.cli.api import entrypoints as e2
+
+        self.assertIsInstance(e1.get(), list)
+        self.assertIsInstance(e2.get(), list)

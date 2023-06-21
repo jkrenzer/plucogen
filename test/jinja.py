@@ -1,7 +1,7 @@
 import unittest
 import os
 
-from plucogen.consumers.yaml import load_yaml_file
+from plucogen.handlers.yaml import load_yaml_file
 
 current_dir = os.path.dirname(__file__)
 

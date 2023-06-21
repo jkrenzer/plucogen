@@ -1,6 +1,6 @@
 import unittest
 import os
-from plucogen.consumers.yaml import load_yaml_file, load_yaml_string
+from plucogen.handlers.yaml import load_yaml_file, load_yaml_string
 from typing import Dict
 
 
@@ -20,7 +20,7 @@ class TestYaml(unittest.TestCase):
         self.assertEqual(data, reference_data)
 
     def test_yaml_path_resolver(self):
-        from plucogen.consumers.yaml.tags import yaml_object, Tag, yaml
+        from plucogen.handlers.yaml.tags import yaml_object, Tag, yaml
 
         @yaml_object(yaml)
         class Test(Tag):
@@ -48,12 +48,12 @@ class TestYaml(unittest.TestCase):
 
 class TestTagInclude(unittest.TestCase):
     def test_construction(self):
-        from plucogen.consumers.yaml.tags import Include
+        from plucogen.handlers.yaml.tags import Include
 
         self.assertIsInstance(Include("test.yaml"), Include)
 
     def test_loading(self):
-        import plucogen.consumers.yaml.tags
+        import plucogen.handlers.yaml.tags
 
         reference_file = os.path.join(current_dir, "test_include.yaml")
         reference_data = load_yaml_file(reference_file)
@@ -108,7 +108,7 @@ class TestTagInclude(unittest.TestCase):
 
 class TestTagTemplate(unittest.TestCase):
     def test_construction(self):
-        from plucogen.consumers.yaml.tags import Template
+        from plucogen.handlers.yaml.tags import Template
 
         self.assertIsInstance(Template(), Template)
 
