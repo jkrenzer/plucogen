@@ -1,5 +1,5 @@
 import logging
-from logging import getLogger, basicConfig, Logger, RootLogger
+from logging import getLogger, basicConfig, Logger, RootLogger, root
 
 logging.captureWarnings(True)
 
