@@ -14,3 +14,5 @@ class ApiInformation:
 _module_name = __name__
 
 entrypoints = Entrypoints.create_entrypoints(_module_name)
+
+from . import v0

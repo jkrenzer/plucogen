@@ -21,9 +21,15 @@ class Entrypoints:
     def create_entrypoints(
         cls, group_prefix_path: Union[Tuple[str], str] = None
     ) -> "Entrypoints":
-        if group_prefix_path is None:
-            group_prefix_path = cls.prefix + (__name__,)
-        elif isinstance(group_prefix_path, str):
-            group_prefix_path = cls.prefix + (group_prefix_path,)
+        if isinstance(group_prefix_path, (str, None)):
+            if group_prefix_path is None:
+                group_prefix_path = __name__
+            group_prefix_path = tuple(group_prefix_path.split("."))
+            if len(group_prefix_path) == 1:
+                group_prefix_path = cls.prefix + group_prefix_path[1:]
         log.debug("Creating entrypoints for %s", ".".join(group_prefix_path))
-        return cls(prefix=group_prefix_path)
+        return type(
+            "Entrypoints",
+            (cls,),
+            {"prefix": group_prefix_path},
+        )
