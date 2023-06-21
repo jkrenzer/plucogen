@@ -1,6 +1,7 @@
 from .parser import parse_args
 from plucogen import logging
 
+logging.basicConfig(level=logging.log_levels["debug"])
 log = logging.getLogger(__name__)
 
 
@@ -8,7 +9,7 @@ def main(args=None):
     options = parse_args(args)
 
     # Set loglevel
-    logging.basicConfig(level=logging.log_levels[options.log_level.lower()])
+    logging.root.setLevel(level=logging.log_levels[options.log_level.lower()])
 
     # Try to execute user command
     try:
