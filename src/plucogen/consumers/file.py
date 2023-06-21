@@ -16,7 +16,10 @@ class Interface(ApiI):
     def consume(cls, inputData: ApiI.InputData) -> ApiI.OutputData:
         filepaths = [f for f in inputData.resources if isinstance(f, Path)]
         return ApiI.OutputData(
-            options=inputData.options, data=cls.read_files(filepaths)
+            options=inputData.options,
+            data=cls.read_files(filepaths),
+            return_code=inputData.return_code,
+            messages=inputData.messages,
         )
 
 
