@@ -11,7 +11,7 @@ def main(options):
 
 
 generateSubParser = parser.subParsers.add_parser(
-    "generate", help="render template files with data"
+    "generate", help="generate files from templates and data"
 )  # type: ignore
 
 generateSubParser.set_defaults(func=main)
