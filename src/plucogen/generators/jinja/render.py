@@ -101,7 +101,7 @@ def main(options):
 from plucogen.generators import generatorParsers
 
 renderSubParser = generatorParsers.add_parser(
-    "jinja", help="render template files with data"
+    "jinja", help="render Jinja template files with data"
 )  # type: ignore
 renderSubParser.set_defaults(func=main)
 
