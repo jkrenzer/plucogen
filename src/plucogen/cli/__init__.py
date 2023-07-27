@@ -12,3 +12,4 @@ Interface.register()
 
 from . import api
 from . import parser
+from .__main__ import main
