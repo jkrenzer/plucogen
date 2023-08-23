@@ -1,6 +1,6 @@
 [tool.poetry]
 name        = "plucogen"
-version     = "0.2.2"
+version     = "0.2.3"
 description = "Pluggable universal code generator using dataformats like JSON and YAML to generate files with template languages like Jinja2."
 authors     = ["Jörn Krenzer <plucogen@joern.krenzer.space>"]
 license     = "LGPL-3"
