@@ -1,12 +1,14 @@
-from pathlib import Path
-from typing import Union, Dict, List, Any
 from logging import getLogger
+from pathlib import Path
+from typing import Any, Dict, List, Union
 
 from plucogen.file import find_file
 
 from . import get_yaml_instance
 
 log = getLogger(__name__)
+
+_current_working_directory: Union[Path, None] = None
 
 
 def load_yaml_string(source: Union[str, Path], context: Union[Dict, Any] = {}):
@@ -28,6 +30,7 @@ def load_yaml_string(source: Union[str, Path], context: Union[Dict, Any] = {}):
         if context is not None:
             log.debug("Postprocessing YAML data")
             from .tags import postprocess
+
             data = postprocess(data, context)
         else:
             log.debug("Skipped postprocessing of YAML data")
@@ -38,8 +41,20 @@ def load_yaml_string(source: Union[str, Path], context: Union[Dict, Any] = {}):
 
 
 def load_yaml_file(filepath: Union[str, Path], context: Union[Dict, Any] = {}):
-    _filepath = find_file(filepath)
-    if isinstance(_filepath, Path):
-        return load_yaml_string(_filepath, context)
-    else:
-        raise FileNotFoundError()
+    global _current_working_directory
+    _filepath = (
+        find_file(filepath, [_current_working_directory])
+        if _current_working_directory is not None
+        else find_file(filepath)
+    )
+    try:
+        if isinstance(_filepath, Path):
+            _current_working_directory = _filepath.parent
+            result = load_yaml_string(_filepath, context)
+            _current_working_directory = None
+            return result
+        else:
+            raise FileNotFoundError()
+    except:
+        _current_working_directory = None
+        raise
