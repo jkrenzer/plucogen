@@ -1,2 +1,4 @@
 i: !include
   file: test_include_loop.yaml
+i2: !include
+  file: test_included.yaml

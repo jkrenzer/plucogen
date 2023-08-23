@@ -79,7 +79,29 @@ class TestTagInclude(unittest.TestCase):
     def test_loading_loop_handling(self):
         include_file = os.path.join(current_dir, "test_subdir/test_include_loop.yaml")
         include_data = load_yaml_file(include_file)
-        reference_data = {"i": {"i": {"file": "test_include_loop.yaml"}}}
+        reference_data = {
+            "i": {
+                "i": {"file": "test_include_loop.yaml"},
+                "i2": {
+                    "a": {
+                        "float": 3.1415,
+                        "list": [0, 1, 2],
+                        "map": {"x": 0, "y": 1, "z": 2},
+                        "number": 1,
+                        "string": "Hello world!",
+                    }
+                },
+            },
+            "i2": {
+                "a": {
+                    "float": 3.1415,
+                    "list": [0, 1, 2],
+                    "map": {"x": 0, "y": 1, "z": 2},
+                    "number": 1,
+                    "string": "Hello world!",
+                }
+            },
+        }
         self.assertEqual(reference_data, include_data)
 
     def test_loading_select_slash(self):

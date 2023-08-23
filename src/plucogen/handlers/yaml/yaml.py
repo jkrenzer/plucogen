@@ -8,7 +8,7 @@ from . import get_yaml_instance
 
 log = getLogger(__name__)
 
-_current_working_directory: Union[Path, None] = None
+_current_working_directories: List[Path] = []
 
 
 def load_yaml_string(source: Union[str, Path], context: Union[Dict, Any] = {}):
@@ -34,27 +34,23 @@ def load_yaml_string(source: Union[str, Path], context: Union[Dict, Any] = {}):
             data = postprocess(data, context)
         else:
             log.debug("Skipped postprocessing of YAML data")
-    except Exception as e:
+    except Exception:
         log.debug("YAML source causing the exception is %s", str(source))
         raise
     return data
 
 
 def load_yaml_file(filepath: Union[str, Path], context: Union[Dict, Any] = {}):
-    global _current_working_directory
-    _filepath = (
-        find_file(filepath, [_current_working_directory])
-        if _current_working_directory is not None
-        else find_file(filepath)
-    )
-    try:
-        if isinstance(_filepath, Path):
-            _current_working_directory = _filepath.parent
+    global _current_working_directories
+    _filepath = find_file(filepath, _current_working_directories)
+
+    if isinstance(_filepath, Path):
+        _current_working_directories.append(_filepath.parent)
+        try:
             result = load_yaml_string(_filepath, context)
-            _current_working_directory = None
-            return result
-        else:
-            raise FileNotFoundError()
-    except:
-        _current_working_directory = None
-        raise
+        except Exception:
+            _current_working_directories.remove(_filepath.parent)
+            raise
+        return result
+    else:
+        raise FileNotFoundError()
