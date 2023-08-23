@@ -1,0 +1,2 @@
+i: !include
+  file: test_included.yaml
