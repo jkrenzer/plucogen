@@ -63,6 +63,9 @@ class Include(Tag):
                     "file": {
                         "type": "string"
                     },
+                    "select": {
+                        "type": "string"
+                    },
                     "required": {
                         "type": "boolean"
                     }
@@ -76,15 +79,17 @@ class Include(Tag):
     }
     """
 
-    def __init__(self, file, required=True):
+    def __init__(self, file, select=None, required=True):
         self.file = file
         self.required = required
+        self.select = select
 
     @classmethod
     def from_data(cls, data):
         from .yaml import load_yaml_file
 
         filepath = data.get("file", None)
+        select_path = data.get("select", None)
         if filepath is not None:
             try:
                 log.info("Including contents of file %s", str(filepath))
@@ -92,10 +97,33 @@ class Include(Tag):
             except FileNotFoundError as e:
                 if not data.get("required", True):
                     log.info(
-                        "Include file %s was not found and thus skipped!", data["file"]
+                        "Include file %s was not found and thus skipped!", filepath
                     )
                 else:
-                    log.error("Required include file %s was not found!", data["file"])
+                    log.error("Required include file %s was not found!", filepath)
+                    raise
+        if select_path is not None:
+            log.info("Processing selection path %s", select_path)
+            select_list = [t for s in select_path.split("/") for t in s.split(".")]
+            try:
+                for index in select_list:
+                    if isinstance(data, list):
+                        data = data[int(index)]
+                    else:
+                        data = data[index]
+            except KeyError as e:
+                if not data.get("required", True):
+                    log.info(
+                        "Selected data path %s was not found in include file %s and thus skipped!",
+                        select_path,
+                        filepath,
+                    )
+                else:
+                    log.error(
+                        "Required selected data path %s in include file %s was not found!",
+                        select_path,
+                        filepath,
+                    )
                     raise
         return data
 
@@ -182,6 +210,7 @@ class Template(Postprocess):
 
     def __str__(self):
         from plucogen.generators.jinja.render import render
+
         return render(
             data=self.data,
             text=self.text,

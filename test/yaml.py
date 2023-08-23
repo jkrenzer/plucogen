@@ -67,6 +67,56 @@ class TestTagInclude(unittest.TestCase):
         )
         self.assertEqual(reference_data, include_data["i"])  # type: ignore
 
+    def test_loading_select_slash(self):
+        import plucogen.handlers.yaml.tags
+
+        reference_file = os.path.join(current_dir, "test_include.yaml")
+        reference_data = load_yaml_file(reference_file)
+        select_path = "a/number"
+        include_data = load_yaml_string(
+            """
+            i: !include
+                file: {}
+                select: {}
+            """.format(
+                reference_file, select_path
+            )
+        )
+        self.assertEqual(reference_data["a"]["number"], include_data["i"])  # type: ignore
+
+    def test_loading_select_dot(self):
+        import plucogen.handlers.yaml.tags
+
+        reference_file = os.path.join(current_dir, "test_include.yaml")
+        reference_data = load_yaml_file(reference_file)
+        select_path = "a.number"
+        include_data = load_yaml_string(
+            """
+            i: !include
+                file: {}
+                select: {}
+            """.format(
+                reference_file, select_path
+            )
+        )
+        self.assertEqual(reference_data["a"]["number"], include_data["i"])  # type: ignore
+
+    def test_loading_select_invalid(self):
+        import plucogen.handlers.yaml.tags
+
+        reference_file = os.path.join(current_dir, "test_include.yaml")
+        select_path = "a/non_existing"
+        with self.assertRaises(KeyError):
+            load_yaml_string(
+                """
+                i: !include
+                    file: {}
+                    select: {}
+                """.format(
+                    reference_file, select_path
+                )
+            )
+
     def test_schema_validation(self):
         from jsonschema import ValidationError
 
