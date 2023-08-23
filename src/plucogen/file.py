@@ -32,7 +32,9 @@ set_search_paths = config.set_search_paths
 get_search_paths = config.get_search_paths
 
 
-def find_file(path: Union[Path, str]) -> Union[Path, None]:
+def find_file(
+    path: Union[Path, str], additional_searchpaths: List[List[Union[Path, str]]] = []
+) -> Union[Path, None]:
     log.debug("Searching file %s", str(path))
     if isinstance(path, str):
         path = Path(path)
@@ -40,7 +42,8 @@ def find_file(path: Union[Path, str]) -> Union[Path, None]:
     if path.is_file():
         log.debug("Found file %s", str(path))
         return path
-    for search_path in get_search_paths():
+    search_paths = list(dict.fromkeys(get_search_paths() + additional_searchpaths))
+    for search_path in search_paths:
         candidate = search_path / path
         log.debug("Evaluating path %s", str(candidate))
         if candidate.is_file():
