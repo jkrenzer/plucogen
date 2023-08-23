@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from logging import getLogger
-from typing import Any, Union, List, Dict
+from typing import Any, Union, List, Dict, Set
 from ruamel.yaml.constructor import ConstructorError, BaseConstructor
 from jsonschema import validate, Draft202012Validator, ValidationError
 
@@ -79,6 +79,8 @@ class Include(Tag):
     }
     """
 
+    _working_on: Set[str] = set()
+
     def __init__(self, file, select=None, required=True):
         self.file = file
         self.required = required
@@ -90,11 +92,14 @@ class Include(Tag):
 
         filepath = data.get("file", None)
         select_path = data.get("select", None)
-        if filepath is not None:
+        if filepath is not None and filepath not in cls._working_on:
             try:
                 log.info("Including contents of file %s", str(filepath))
+                cls._working_on.add(filepath)
                 data = load_yaml_file(filepath, None)
+                cls._working_on.remove(filepath)
             except FileNotFoundError as e:
+                cls._working_on.remove(filepath)
                 if not data.get("required", True):
                     log.info(
                         "Include file %s was not found and thus skipped!", filepath
@@ -102,29 +107,29 @@ class Include(Tag):
                 else:
                     log.error("Required include file %s was not found!", filepath)
                     raise
-        if select_path is not None:
-            log.info("Processing selection path %s", select_path)
-            select_list = [t for s in select_path.split("/") for t in s.split(".")]
-            try:
-                for index in select_list:
-                    if isinstance(data, list):
-                        data = data[int(index)]
+            if select_path is not None:
+                log.info("Processing selection path %s", select_path)
+                select_list = [t for s in select_path.split("/") for t in s.split(".")]
+                try:
+                    for index in select_list:
+                        if isinstance(data, list):
+                            data = data[int(index)]
+                        else:
+                            data = data[index]
+                except KeyError as e:
+                    if not data.get("required", True):
+                        log.info(
+                            "Selected data path %s was not found in include file %s and thus skipped!",
+                            select_path,
+                            filepath,
+                        )
                     else:
-                        data = data[index]
-            except KeyError as e:
-                if not data.get("required", True):
-                    log.info(
-                        "Selected data path %s was not found in include file %s and thus skipped!",
-                        select_path,
-                        filepath,
-                    )
-                else:
-                    log.error(
-                        "Required selected data path %s in include file %s was not found!",
-                        select_path,
-                        filepath,
-                    )
-                    raise
+                        log.error(
+                            "Required selected data path %s in include file %s was not found!",
+                            select_path,
+                            filepath,
+                        )
+                        raise
         return data
 
     @classmethod

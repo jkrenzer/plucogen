@@ -76,6 +76,12 @@ class TestTagInclude(unittest.TestCase):
         include_data = load_yaml_file(include_file)
         self.assertEqual(reference_data, include_data["i"])  # type: ignore
 
+    def test_loading_loop_handling(self):
+        include_file = os.path.join(current_dir, "test_subdir/test_include_loop.yaml")
+        include_data = load_yaml_file(include_file)
+        reference_data = {"i": {"i": {"file": "test_include_loop.yaml"}}}
+        self.assertEqual(reference_data, include_data)
+
     def test_loading_select_slash(self):
         import plucogen.handlers.yaml.tags
 
