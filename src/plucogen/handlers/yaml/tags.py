@@ -79,7 +79,7 @@ class Include(Tag):
     }
     """
 
-    _working_on: Set[str] = set()
+    _working_on: Dict[str, Any] = {}
 
     def __init__(self, file, select=None, required=True):
         self.file = file
@@ -92,14 +92,13 @@ class Include(Tag):
 
         filepath = data.get("file", None)
         select_path = data.get("select", None)
-        if filepath is not None and filepath not in cls._working_on:
+        if filepath is not None and filepath not in cls._working_on.keys():
             try:
                 log.info("Including contents of file %s", str(filepath))
-                cls._working_on.add(filepath)
+                cls._working_on[filepath] = None
                 data = load_yaml_file(filepath, None)
-                cls._working_on.remove(filepath)
             except FileNotFoundError as e:
-                cls._working_on.remove(filepath)
+                del cls._working_on[filepath]
                 if not data.get("required", True):
                     log.info(
                         "Include file %s was not found and thus skipped!", filepath
@@ -130,6 +129,7 @@ class Include(Tag):
                             filepath,
                         )
                         raise
+            cls._working_on[filepath] = data
         return data
 
     @classmethod
