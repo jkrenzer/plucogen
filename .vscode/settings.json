@@ -10,5 +10,8 @@
     "evenBetterToml.formatter.alignEntries": true,
     "evenBetterToml.formatter.allowedBlankLines": 3,
     "evenBetterToml.formatter.columnWidth": 60,
-    "evenBetterToml.formatter.arrayAutoCollapse": true
+    "evenBetterToml.formatter.arrayAutoCollapse": true,
+    "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.autoImportCompletions": true,
+    "isort.importStrategy": "fromEnvironment"
 }
