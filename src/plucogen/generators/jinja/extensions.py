@@ -1,8 +1,9 @@
 import re
-from typing import Tuple
-from jinja2.ext import Extension
-from jinja2 import nodes
 from logging import getLogger
+from typing import Tuple
+
+from jinja2 import nodes
+from jinja2.ext import Extension
 
 log = getLogger(__name__)
 
@@ -16,7 +17,7 @@ class YAMLMetadata(Extension):
         environment.globals["Metadata"] = self._metadata
 
     def _load_mixed_string(self, string) -> Tuple[dict, str]:
-        from ruamel.yaml import YAML, scanner, constructor
+        from ruamel.yaml import YAML, constructor, scanner
 
         data = dict()
         if re.search(self.separator_re, string):

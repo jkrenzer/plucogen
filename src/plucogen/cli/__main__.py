@@ -1,7 +1,7 @@
-from .parser import parse_args
 from plucogen import logging
 
-logging.basicConfig(level=logging.log_levels["debug"])
+from .parser import parse_args
+
 log = logging.getLogger(__name__)
 
 
@@ -9,7 +9,9 @@ def main(args=None):
     options = parse_args(args)
 
     # Set loglevel
-    logging.root.setLevel(level=logging.log_levels[options.log_level.lower()])
+    log_level = logging.log_levels[options.log_level.lower()]
+    logging.basicConfig(level=log_level)
+    log.info("Started logging. Messages above where buffered since program startup.")
 
     # Try to execute user command
     try:

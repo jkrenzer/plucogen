@@ -1,16 +1,17 @@
 from abc import abstractmethod
-from dataclasses import dataclass
-from typing import Dict, List, Union
-from .base import Interface as BaseInterface, DataList
-from plucogen.logging import getLogger
-from plucogen.api.v0.api import (
-    get_interface_registry,
-    InterfaceBase as _ApiI,
-    Registry as _ApiR,
-)
 from argparse import Namespace
+from dataclasses import dataclass
 from pathlib import Path
+from typing import Dict, List, Union
 from urllib.parse import ParseResult as Url
+
+from plucogen.api.v0.api import InterfaceBase as _ApiI
+from plucogen.api.v0.api import Registry as _ApiR
+from plucogen.api.v0.api import get_interface_registry
+from plucogen.logging import getLogger
+
+from .base import DataList
+from .base import Interface as BaseInterface
 
 log = getLogger(__name__)
 
@@ -25,8 +26,22 @@ _ApiInterface.register()
 
 
 class Interface(BaseInterface):
+    """
+    Interface for consumers, which consume resources and
+    output a data object with information derived from the
+    consumed resources, e.g. files.
+    """
+
+    name = "consumer"
+    module = __name__
+
     @dataclass
     class InputData(BaseInterface.InputData):
+        """
+        Consumer input data are pointers to resources, e.g.
+        paths to files or URLs.
+        """
+
         resources: List[Union[Path, Url]]
 
     @dataclass
@@ -39,9 +54,8 @@ class Interface(BaseInterface):
     def consume(input: InputData) -> OutputData:
         pass
 
-
 Registry = get_interface_registry(
-    InterfaceT=Interface, module=__name__, forbidden_names=set()
+    InterfaceT=_ApiInterface, module=__name__, forbidden_names=set()
 )
 
 if _ApiInterface.registry.is_available("cli"):

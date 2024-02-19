@@ -1,7 +1,8 @@
 from dataclasses import dataclass
-from .entrypoint import Entrypoints
 
 from plucogen.logging import getLogger
+
+from .entrypoint import Entrypoints
 
 log = getLogger(__name__)
 

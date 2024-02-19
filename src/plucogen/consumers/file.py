@@ -1,7 +1,8 @@
 from pathlib import Path
 from typing import List
 
-from plucogen.api.v0.consumer import Interface as ApiI, Registry
+from plucogen.api.v0.consumer import Interface as ApiI
+from plucogen.api.v0.consumer import Registry
 
 
 class Interface(ApiI):

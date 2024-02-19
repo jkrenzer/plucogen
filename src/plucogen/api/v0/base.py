@@ -1,9 +1,10 @@
-from abc import abstractmethod, ABC
-from dataclasses import dataclass, field
-from .api import InterfaceBase as _ApiI
-from typing import List
-from collections.abc import Iterable
+from abc import ABC, abstractmethod
 from argparse import Namespace
+from collections.abc import Iterable
+from dataclasses import dataclass, field
+from typing import List
+
+from .api import InterfaceBase as _ApiI
 
 
 @dataclass

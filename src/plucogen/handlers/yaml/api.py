@@ -1,8 +1,9 @@
 from typing import List
 
 from plucogen.api.v0.handler import Interface as _ApiI
-from .yaml import load_yaml_string
+
 from . import _module_name
+from .yaml import load_yaml_string
 
 
 class Interface(_ApiI):

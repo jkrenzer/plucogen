@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from importlib import metadata
-from typing import Union, Tuple, List
+from typing import List, Tuple, Union
 
 from plucogen.logging import getLogger
 
@@ -8,7 +8,7 @@ log = getLogger(__name__)
 
 
 @dataclass
-class Entrypoints:
+class Entrypoints(object):
     prefix: Tuple[str] = tuple()
 
     @classmethod
@@ -16,6 +16,10 @@ class Entrypoints:
         group = ".".join(cls.prefix + group_path)
         log.debug("Looking up entrypoints for %s", group)
         return metadata.entry_points().select(group=group)
+
+    @classmethod
+    def get_all(cls) -> List:
+        return metadata.entry_points()
 
     @classmethod
     def create_entrypoints(

@@ -1,7 +1,10 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
+
+from plucogen.api.v0.api import InterfaceBase as _ApiI
+from plucogen.api.v0.api import get_interface_registry
+
 from .base import Interface as BaseInterface
-from plucogen.api.v0.api import get_interface_registry, InterfaceBase as _ApiI
 
 
 @dataclass

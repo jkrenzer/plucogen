@@ -1,2 +1,1 @@
-from . import extensions
-from . import render
+from . import extensions, render

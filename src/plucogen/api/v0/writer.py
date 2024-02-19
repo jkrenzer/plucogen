@@ -1,7 +1,10 @@
 from abc import abstractmethod
 from dataclasses import dataclass
+
+from plucogen.api.v0.api import InterfaceBase as _ApiI
+from plucogen.api.v0.api import get_interface_registry
+
 from .base import Interface as BaseInterface
-from plucogen.api.v0.api import get_interface_registry, InterfaceBase as _ApiI
 
 
 @dataclass
@@ -22,10 +25,22 @@ class Interface(BaseInterface):
 
     @classmethod
     @abstractmethod
-    def write(input: InputData) -> OutputData:
+    def write(cls, input: InputData) -> OutputData:
         pass
 
 
 Registry = get_interface_registry(
     InterfaceT=Interface, module=__name__, forbidden_names=set()
 )
+
+
+class Test(Interface):
+    name = "Testy"
+    module = __name__
+
+    @classmethod
+    def write(cls, input: Interface.InputData) -> Interface.OutputData:
+        pass
+
+
+Test.register()

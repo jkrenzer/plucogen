@@ -1,6 +1,7 @@
 from plucogen.generators import generatorParsers
-from .. import logging
 from plucogen.handlers.yaml import tags
+
+from .. import logging
 
 log = logging.getLogger(__name__)
 

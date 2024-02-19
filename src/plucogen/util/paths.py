@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Tuple, Union, Iterable
+from typing import Iterable, Tuple, Union
 
 
 class ArbitraryPath:

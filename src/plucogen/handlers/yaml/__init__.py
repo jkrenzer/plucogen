@@ -1,9 +1,9 @@
 from ruamel.yaml import (
     YAML,
-    yaml_object,
     MappingNode,
-    add_path_resolver,
     add_implicit_resolver,
+    add_path_resolver,
+    yaml_object,
 )
 
 
