@@ -7,5 +7,17 @@
 		"dockerfile": "../.docker/Dockerfile",
 		"target": "${localEnv:DEVCONT_BUILD_TARGET:vscode-dev}"
 	},
-	"postCreateCommand": "poetry install"
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"tamasfe.even-better-toml",
+				"ms-python.vscode-pylance",
+				"ms-python.python",
+				"redhat.vscode-yaml",
+				"ms-python.black-formatter",
+				"ms-python.isort",
+				"mikoz.autoflake-extension"
+			]
+		}
+	}
 }

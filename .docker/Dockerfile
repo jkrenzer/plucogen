@@ -10,7 +10,7 @@ LABEL org.opencontainers.image.authors="Jörn Krenzer <container@joern.krenzer.s
 LABEL org.opencontainers.image.licenses="LGPL-3.0-or-later"
 LABEL org.opencontainers.image.source="https://gitlab.krenzer.space/software/plucogen/core"
 LABEL org.opencontainers.image.url="https://gitlab.krenzer.space/software/plucogen/core"
-LABEL org.opencontainers.image.version="0.0.1"
+LABEL org.opencontainers.image.version="0.0.2"
 
 ENV WORK_DIR=${WORK_DIR}
 ENV CACHE_DIR=${CACHE_DIR}
@@ -29,29 +29,22 @@ COPY ./ ./
 RUN apk --no-cache add\
     g++\
     gcc
-RUN poetry install --with=dev
 
 FROM base as dev
 ARG WORK_DIR
 ARG CACHE_DIR
 ENV WORK_DIR=${WORK_DIR}
 ENV CACHE_DIR=${CACHE_DIR}
-COPY --from=installer /usr/local/lib /usr/local/lib
-COPY poetry.lock .
-COPY pyproject.toml .
-RUN poetry install
-RUN rm pyproject.toml poetry.lock
+COPY --from=installer /usr/local /usr/local
+COPY ./* ${WORK_DIR}
+RUN poetry install --with=dev
 
 FROM dev AS vscode-dev
 ARG WORK_DIR
 ARG CACHE_DIR
 ENV WORK_DIR=${WORK_DIR}
 ENV CACHE_DIR=${CACHE_DIR}
-RUN git config --global core.editor "code --wait"
+ENV EDITOR="code --wait"
+RUN git config --global core.editor "${EDITOR}"
 
 FROM dev as final
-ARG WORK_DIR
-ARG CACHE_DIR
-ENV WORK_DIR=${WORK_DIR}
-ENV CACHE_DIR=${CACHE_DIR}
-COPY ./  ${WORK_DIR}
