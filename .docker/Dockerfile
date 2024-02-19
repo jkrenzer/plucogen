@@ -45,6 +45,7 @@ ARG CACHE_DIR
 ENV WORK_DIR=${WORK_DIR}
 ENV CACHE_DIR=${CACHE_DIR}
 ENV EDITOR="code --wait"
-RUN git config --global core.editor "${EDITOR}"
+RUN git config --global core.editor "${EDITOR}" && \
+  git config pull.rebase true
 
 FROM dev as final
