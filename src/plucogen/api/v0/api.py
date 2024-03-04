@@ -318,7 +318,7 @@ class InterfaceRegistry:
         log.debug(
             "Checking availability of API module %s (%s)", local_name, canonical_name
         )
-        return local_name in cls._sub_apis and canonical_name in modules
+        return canonical_name in cls._sub_apis and canonical_name in modules
 
     @classmethod
     def when_available(cls, name: str):
