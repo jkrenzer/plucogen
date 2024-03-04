@@ -17,11 +17,12 @@ jsonschema = { extras = ["format"], version = "^4.17.3" }
 pydantic = "^2.5.3"
 
 [tool.poetry.group.dev.dependencies]
-coverage = "^7.2.7"
-pycotap  = "^1.3.1"
-black    = "^23.3.0"
-isort = "^5.13.2"
-autoflake = "^2.2.1"
+coverage   = "^7.2.7"
+pycotap    = "^1.3.1"
+black      = "^23.3.0"
+isort      = "^5.13.2"
+autoflake  = "^2.2.1"
+poethepoet = "^0.25.0"
 
 [tool.poetry.scripts]
 plucogen = "plucogen.cli.__main__:main"
@@ -30,6 +31,12 @@ plucogen = "plucogen.cli.__main__:main"
 [tool.poetry.plugins."plucogen.plugin.generators"]
 "generatorArgParsers" = "plucogen.generators:generatorParsers"
 
+[tool.poe]
+poetry_command = "do"
+
+[tool.poe.tasks.test]
+cmd  = "python -m test --log-level debug"
+help = "Run tests for the package"
 
 [build-system]
 requires      = ["poetry-core"]
