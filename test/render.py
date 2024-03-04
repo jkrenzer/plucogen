@@ -1,12 +1,12 @@
-import unittest
 import os
 from plucogen.handlers.yaml import load_yaml_file
 
+from .base import TestCase
 
 current_dir = os.path.dirname(__file__)
 
 
-class TestRender(unittest.TestCase):
+class TestRender(TestCase):
     def test_render_function_api(self):
         from plucogen.generators.jinja.render import render
 

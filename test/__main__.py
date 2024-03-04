@@ -35,13 +35,15 @@ rootParser.add(
     default="./.coverage_report",
     type=Path,
 )
-rootParser.add("pattern", help="Pattern(s) of tests to run", default=['*'], nargs='*')  # type: ignore
+rootParser.add("pattern", help="Pattern(s) of tests to run", default=["*"], nargs="*")  # type: ignore
 
 if __name__ == "__main__":
     #    logging.basicConfig(level=logging.DEBUG)
 
     options = rootParser.parse_args()
-    tests = TestLoader().loadTestsFromModule(sys.modules[__name__], pattern=options.pattern)
+    tests = TestLoader().loadTestsFromModule(
+        sys.modules[__name__], pattern=options.pattern
+    )
 
     # Set loglevel
     logging.basicConfig(level=logging.log_levels[options.log_level.lower()])
@@ -51,9 +53,9 @@ if __name__ == "__main__":
 
         testRunner = TAPTestRunner()
     else:
-        from unittest import TextTestRunner
+        from .base import TestRunner
 
-        testRunner = TextTestRunner(verbosity=options.verbose)
+        testRunner = TestRunner(verbosity=options.verbose)
 
     if options.coverage_report:
         from coverage import Coverage

@@ -1,13 +1,13 @@
-import unittest
 import os
 from plucogen.handlers.yaml import load_yaml_file, load_yaml_string
 from typing import Dict
 
+from .base import TestCase
 
 current_dir = os.path.dirname(__file__)
 
 
-class TestYaml(unittest.TestCase):
+class TestYaml(TestCase):
     def test_yaml_load_string(self):
         data = load_yaml_string("a: 1")
         reference_data = {"a": 1}
@@ -46,7 +46,7 @@ class TestYaml(unittest.TestCase):
         self.assertIsInstance(test, Test)
 
 
-class TestTagInclude(unittest.TestCase):
+class TestTagInclude(TestCase):
     def test_construction(self):
         from plucogen.handlers.yaml.tags import Include
 
@@ -193,7 +193,7 @@ class TestTagInclude(unittest.TestCase):
         )
 
 
-class TestTagTemplate(unittest.TestCase):
+class TestTagTemplate(TestCase):
     def test_construction(self):
         from plucogen.handlers.yaml.tags import Template
 

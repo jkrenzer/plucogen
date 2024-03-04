@@ -1,4 +1,4 @@
-from unittest import TestCase, expectedFailure
+from .base import TestCase
 import os
 
 current_dir = os.path.dirname(__file__)
@@ -62,17 +62,23 @@ class TestApiV0Interface(TestCase):
         self.assertIsInstance(file.Interface.consume(input).data[0], str)
 
     def test_base_apis_registered(self):
+        from plucogen.api import v0
         from plucogen.api.v0.api import Registry, InterfaceRegistry
         from inspect import isabstract
 
         self.assertTrue(issubclass(Registry, InterfaceRegistry))
         self.assertFalse(isabstract(Registry))
+        versions = {"v0"}
+        prefix = "plucogen"
         mandatory_apis = {"cli", "consumer", "generator", "handler", "writer"}
-        for a in mandatory_apis:
-            with self.subTest("Checking API %s registered" % a, api=a):
-                self.assertTrue(
-                    Registry.is_available(a), "Mandatory API %s not registered!" % a
-                )
+        for v in versions:
+            for a in mandatory_apis:
+                a_str = f"{prefix}.{v}.{a}"
+                with self.subTest("Checking API %s registered" % a, api=a_str):
+                    self.assertTrue(
+                        Registry.is_available(a_str),
+                        "Mandatory API %s not registered!" % a_str,
+                    )
 
     def test_entrypoint_generation(self):
         from plucogen.api.v0.api import entrypoints as e1

@@ -2,11 +2,12 @@ import unittest
 import os
 
 from plucogen.handlers.yaml import load_yaml_file
+from .base import TestCase
 
 current_dir = os.path.dirname(__file__)
 
 
-class TestJinjaExtensions(unittest.TestCase):
+class TestJinjaExtensions(TestCase):
     def test_jinja_ext_metadata(self):
         from jinja2 import Environment, FileSystemLoader
 

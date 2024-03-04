@@ -1,10 +1,11 @@
 import unittest
 import os
+from .base import TestCase
 
 current_dir = os.path.dirname(__file__)
 
 
-class TestCLI(unittest.TestCase):
+class TestCLI(TestCase):
     def test_cli_file_generation(self):
         import plucogen
 
