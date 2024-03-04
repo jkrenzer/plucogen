@@ -382,7 +382,7 @@ entrypoints = _api.entrypoints.create_entrypoints(_module_name)
 Registry = InterfaceRegistry.get_interface_registry(
     InterfaceT=InterfaceBase,
     module=_module_name,
-    path=ModulePath("v0"),
+    path=ModulePath("plucogen.v0"),
     forbidden_names=set("__strictly_prohibited__"),
 )
 
