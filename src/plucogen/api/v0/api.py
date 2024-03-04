@@ -193,12 +193,14 @@ class InterfaceRegistry:
                 )
 
     @classmethod
-    def get_module(cls, module: Union[str, ModuleType]):
+    def get_module(cls, module: Union[ModulePath, ModuleType, str]):
         from importlib import import_module, invalidate_caches
 
         name = ""
         if isinstance(module, ModuleType):
             name = module.__name__
+        elif isinstance(module, ModulePath):
+            name = str(module)
         elif isinstance(module, str):
             name = module
         else:
