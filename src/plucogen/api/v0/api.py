@@ -253,13 +253,18 @@ class InterfaceRegistry:
 
     @classmethod
     def get_local_name(cls, name: str) -> str:
-        log.debug(
-            "Getting local name for %s as %s", name, ModulePath(name).local_name()
-        )
-        return str(ModulePath(name).local_name())
+        lname = str(ModulePath(name).local_name())
+        log.debug("Getting local name for %s as %s", name, lname)
+        return lname
 
     @classmethod
     def get_canonical_name(cls, name: str) -> str:
+        log.debug(
+            "Get canonical name for %s with class %s parent path %s",
+            name,
+            cls.__name__,
+            str(cls.path),
+        )
         return str(cls.path + cls.get_local_name(name))
 
     @classmethod
