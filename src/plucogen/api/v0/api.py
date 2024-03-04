@@ -368,7 +368,7 @@ class InterfaceRegistry:
             )
             if isinstance(module, (str, ModuleType)):
                 c.module = module
-            R.register_api(c)
+            c.Registry.register_api(c)
 
         InterfaceT.register = classmethod(reg)
         InterfaceT.Registry = R
