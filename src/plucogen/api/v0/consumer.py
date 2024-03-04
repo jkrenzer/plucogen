@@ -54,8 +54,9 @@ class Interface(BaseInterface):
     def consume(input: InputData) -> OutputData:
         pass
 
+
 Registry = get_interface_registry(
-    InterfaceT=_ApiInterface, module=__name__, forbidden_names=set()
+    InterfaceT=Interface, module=__name__, forbidden_names=set()
 )
 
 if _ApiInterface.registry.is_available("cli"):
