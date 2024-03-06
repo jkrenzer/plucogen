@@ -1,4 +1,5 @@
 import logging
+from enum import Enum
 from functools import update_wrapper
 from inspect import signature
 
@@ -18,14 +19,13 @@ from typing import TYPE_CHECKING
 logging.captureWarnings(True)
 logging.basicConfig()
 
-log_levels = {
-    "notset": logging.NOTSET,
-    "debug": logging.DEBUG,
-    "info": logging.INFO,
-    "warn": logging.WARN,
-    "error": logging.ERROR,
-    "critical": logging.CRITICAL,
-}
+class LogLevels(int, Enum):
+    notset = logging.NOTSET
+    debug = logging.DEBUG
+    info = logging.INFO
+    warn = logging.WARN
+    error = logging.ERROR
+    critical = logging.CRITICAL
 
 
 default_handler = root.handlers.pop()
@@ -47,6 +47,7 @@ def start(level: int = logging.NOTSET):
     root.addHandler(default_handler)
     _start_up = False
 
+
 def _basicConfig(level: int, **kwargs) -> None:
     global _start_up
 
@@ -54,5 +55,6 @@ def _basicConfig(level: int, **kwargs) -> None:
         start(level)
     signature(logging.basicConfig).bind(level=level, **kwargs)
     return logging.basicConfig(level=level, **kwargs)
+
 
 basicConfig = update_wrapper(wrapper=_basicConfig, wrapped=logging.basicConfig)
