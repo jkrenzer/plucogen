@@ -1,0 +1,23 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.245.2/containers/docker-existing-dockerfile
+{
+	"name": "PluCoGen Docker Installer",
+	"build": {
+		"context": "../..",
+		"dockerfile": "../../.docker/Dockerfile",
+		"target": "${localEnv:DEVCONT_BUILD_TARGET:installer}"
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"tamasfe.even-better-toml",
+				"ms-python.vscode-pylance",
+				"ms-python.python",
+				"redhat.vscode-yaml",
+				"ms-python.black-formatter",
+				"ms-python.isort",
+				"mikoz.autoflake-extension"
+			]
+		}
+	}
+}
