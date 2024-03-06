@@ -100,7 +100,7 @@ def main(options):
     )
 
 
-from plucogen.generators import generatorParsers
+from ..cli import generatorParsers
 
 renderSubParser = generatorParsers.add_parser(
     "jinja", help="render Jinja template files with data"
