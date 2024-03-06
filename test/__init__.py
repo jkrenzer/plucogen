@@ -6,6 +6,7 @@ from .yaml import TestTagInclude, TestTagTemplate, TestYaml
 from .cli import TestCLI
 from .plugin import TestEntrypoints
 from .api import TestApiV0Interface
+from . import project
 
 test_cases = (
     TestCLI,
@@ -17,6 +18,8 @@ test_cases = (
     TestEntrypoints,
     TestApiV0Interface,
 )
+
+test_cases += project.test_cases
 
 
 def load_tests(loader, tests, pattern: List[str] = ["*"]):
