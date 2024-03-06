@@ -1,5 +1,5 @@
-from plucogen.generators import generatorParsers
 from plucogen.handlers.yaml import tags
+from .cli import generatorParsers
 
 from .. import logging
 

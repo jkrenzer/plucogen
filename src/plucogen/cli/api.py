@@ -7,8 +7,8 @@ class Interface(_api.InterfaceBase):
     from .parser import subParsers
 
 
-Registry = _api.get_interface_registry(
+Registry = _api.create_interface_registry(
     InterfaceT=Interface, module=__name__, forbidden_names=set()
 )
 
-entrypoints = _api.entrypoints.create_entrypoints("cli")
+entrypoints = Registry.entrypoints
