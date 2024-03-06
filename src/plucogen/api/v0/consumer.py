@@ -5,24 +5,13 @@ from pathlib import Path
 from typing import Dict, List, Union
 from urllib.parse import ParseResult as Url
 
-from plucogen.api.v0.api import InterfaceBase as _ApiI
-from plucogen.api.v0.api import Registry as _ApiR
-from plucogen.api.v0.api import get_interface_registry
+from plucogen.api.v0.api import create_interface_registry
 from plucogen.logging import getLogger
 
 from .base import DataList
 from .base import Interface as BaseInterface
 
 log = getLogger(__name__)
-
-
-@dataclass
-class _ApiInterface(_ApiI):
-    name = "consumer"
-    module = __name__
-
-
-_ApiInterface.register()
 
 
 class Interface(BaseInterface):
@@ -55,19 +44,19 @@ class Interface(BaseInterface):
         pass
 
 
-Registry = get_interface_registry(
+Registry = create_interface_registry(
     InterfaceT=Interface, module=__name__, forbidden_names=set()
 )
 
-if _ApiInterface.registry.is_available("cli"):
-    log.debug("Activaing CLI integration for consumers")
-    from plucogen.api.v0.cli.api import Interface as _CliI
+# if _ApiInterface.registry.is_available("cli"):
+#     log.debug("Activaing CLI integration for consumers")
+#     from plucogen.api.v0.cli.api import Interface as _CliI
 
-    class CliInterface(_CliI):
-        pass
+#     class CliInterface(_CliI):
+#         pass
 
-    CliInterface.subParsers.add_parser(
-        "consume", help="Consume resources and input the data", aliases="co"
-    )
+#     CliInterface.subParsers.add_parser(
+#         "consume", help="Consume resources and input the data", aliases="co"
+#     )
 
-    CliInterface.register()
+#     CliInterface.register()

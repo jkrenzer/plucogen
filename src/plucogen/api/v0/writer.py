@@ -2,7 +2,7 @@ from abc import abstractmethod
 from dataclasses import dataclass
 
 from plucogen.api.v0.api import InterfaceBase as _ApiI
-from plucogen.api.v0.api import get_interface_registry
+from plucogen.api.v0.api import create_interface_registry
 
 from .base import Interface as BaseInterface
 
@@ -29,7 +29,7 @@ class Interface(BaseInterface):
         pass
 
 
-Registry = get_interface_registry(
+Registry = create_interface_registry(
     InterfaceT=Interface, module=__name__, forbidden_names=set()
 )
 

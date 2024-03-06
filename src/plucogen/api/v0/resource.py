@@ -1,65 +1,91 @@
 from pathlib import Path
-from typing import Annotated, List, Union
+from typing import Annotated, Any, List, Union
 
-from _typeshed import StrPath
-from annotated_types import _StrType
-from jinja2 import Environment
-from jinja2.environment import TemplateExpression
+from os import PathLike
+from jinja2.environment import Environment, Template
+from pydantic import GetPydanticSchema, GetCoreSchemaHandler, GetJsonSchemaHandler
+from pydantic_core import core_schema, CoreSchema
 from pydantic.networks import AnyUrl
 
-Path = Path
+from plucogen.logging import getLogger
+from .api.module_path import ModulePath as _ModulePath
+
 Paths = List[Path]
+
+log = getLogger(__name__)
 
 
 class _PathTemplate(object):
     def __init__(self, *args) -> None:
-        paths = []
-        self._env = None
-        for i, arg in enumerate(args):
-            if isinstance(arg, str):
-                if self._env is None:
-                    self._env = Environment()
-                paths.append(self._env.compile_expression(arg))
-            else:
-                paths.append(arg)
-        self._raw_paths = paths
+        log.debug(f"Building PathTemplate from {args}")
+        self._raw_paths = args or []
 
-    def compile_with(self, cwd: Path = Path.cwd(), *args, **kwargs) -> Path:
-        paths: List[StrPath] = []
+    def evaluate(self, cwd: Path = Path.cwd(), *args, **kwargs) -> Path:
+        paths: List[PathLike] = []
+        env = Environment()
         for path in self._raw_paths:
-            if isinstance(path, TemplateExpression):
-                str_path = str(path(*args, **kwargs))
-                if isinstance(str_path, str):
-                    if "*" in str_path:
-                        if Path(str_path).is_absolute():
-                            paths.extend(Path("/").glob(str_path))
-                        else:
-                            paths.extend(cwd.glob(str_path))
+            str_path = str(env.from_string(path).render(*args, **kwargs))
+            if isinstance(str_path, str):
+                if "*" in str_path:
+                    path = Path(str_path)
+                    if path.is_absolute():
+                        paths.extend(path.parent.glob(path.name))
                     else:
-                        paths.append(str_path)
+                        paths.extend(cwd.glob(str_path))
                 else:
-                    raise TypeError(
-                        f"Cannot parse template-path '{path._template}' to a valid StrPath!"
-                    )
+                    paths.append(str_path)
             else:
-                paths.append(path)
+                raise TypeError(
+                    f"Cannot parse template-path '{str(path)}' to a valid PathLike!"
+                )
         return Path(*paths)
 
 
-PathTemplate = Annotated[_PathTemplate, _StrType]
-PathTemplates = List[PathTemplate]
+_HandleAsStr = GetPydanticSchema(
+    lambda tp, handler: core_schema.no_info_after_validator_function(
+        lambda p: str(p), handler(str)
+    )
+)
+
+
+class PathTemplate(_PathTemplate):
+    @classmethod
+    def __get_pydantic_core_schema__(
+        cls, source_type: Any, handler: GetCoreSchemaHandler
+    ) -> CoreSchema:
+        return core_schema.no_info_after_validator_function(
+            cls,
+            handler(str),
+            serialization=core_schema.plain_serializer_function_ser_schema(
+                lambda instance: str(instance)
+            ),
+        )
+
+
+class ModulePath(_ModulePath):
+    @classmethod
+    def __get_pydantic_core_schema__(
+        cls, source_type: Any, handler: GetCoreSchemaHandler
+    ) -> CoreSchema:
+        return core_schema.no_info_after_validator_function(
+            cls,
+            handler(str),
+            serialization=core_schema.plain_serializer_function_ser_schema(
+                lambda instance: str(instance)
+            ),
+        )
+
 
 AnyPath = Union[Path, PathTemplate]
-AnyPaths = List[AnyPath]
-
-UrlTemplate = Annotated[str, _StrType]
-UrlTemplates = List[UrlTemplate]
-
-Resource = Union[Path, AnyUrl]
-Resources = List[Resource]
-
+UrlTemplate = Annotated[str, _HandleAsStr]
+Resource = Union[AnyPath, AnyUrl]
 ResourceTemplate = Union[PathTemplate, UrlTemplate]
-ResourceTemplates = List[ResourceTemplate]
-
 AnyResource = Union[Resource, ResourceTemplate]
+
+PathTemplates = List[PathTemplate]
+AnyPaths = List[AnyPath]
+UrlTemplates = List[UrlTemplate]
+Resources = List[Resource]
+ResourceTemplates = List[ResourceTemplate]
 AnyResources = List[AnyResource]
+ModulePaths = List[ModulePath]

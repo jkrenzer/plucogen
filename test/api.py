@@ -1,3 +1,4 @@
+from plucogen.api.v0.base import Interface
 from .base import TestCase
 import os
 
@@ -28,31 +29,41 @@ class TestApiV0Interface(TestCase):
         self.assertRaises(ImportError, register_api, MockInterface)
 
     def test_api_registration(self):
-        from plucogen.api.v0.api import InterfaceBase, register_api, unregister_api
+        from plucogen.api import v0
+        from plucogen.api.v0.api import (
+            InterfaceBase,
+            Registry,
+            register_api,
+            unregister_api,
+        )
         from types import ModuleType
         import sys
 
-        def t():
-            return True
+        from . import api_mock_module as m
 
-        m = ModuleType("mockTestModule")
-
-        test_interface = InterfaceBase(name="test", module=m)
-
-        m.t = t
-        sys.modules[m.__name__] = m
+        test_interface = InterfaceBase.create_interface(
+            name="test", module=m.__name__, registry=Registry
+        )
 
         register_api(test_interface)
 
-        from plucogen.api.v0.test import t as t2  # type: ignore
+        test = v0.import_module("plucogen.v0.test")
+        t2 = test.t  # type: ignore
 
         self.assertTrue(t2())
         unregister_api(test_interface)
         with self.assertRaises(ImportError):
-            from plucogen.api.v0.test import t as t3  # type: ignore
+            test = v0.import_module("plucogen.v0.test")
 
     def test_consumer(self):
-        from plucogen.api.v0.consumer import file, Interface
+        from plucogen.api import v0
+        from plucogen.logging import getLogger
+
+        log = getLogger(__name__)
+
+        file = v0.import_module("plucogen.v0.consumer.file")
+        Interface = file.Interface
+
         from pathlib import Path
 
         testFile = Path(current_dir) / "test_include.yaml"
@@ -69,7 +80,7 @@ class TestApiV0Interface(TestCase):
         self.assertTrue(issubclass(Registry, InterfaceRegistry))
         self.assertFalse(isabstract(Registry))
         versions = {"v0"}
-        prefix = "plucogen"
+        prefix = "plucogen.api"
         mandatory_apis = {"cli", "consumer", "generator", "handler", "writer"}
         for v in versions:
             for a in mandatory_apis:

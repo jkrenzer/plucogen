@@ -44,7 +44,7 @@ class DataList(list):
             self[index] = value
 
 
-class Interface(ABC, _ApiI):
+class Interface(_ApiI):
     @dataclass
     class InputData:
         options: Namespace
