@@ -1,4 +1,4 @@
-FROM python:3.10-alpine as base
+FROM python:3.11-alpine as base
 
 # Setup base environment
 
@@ -10,7 +10,7 @@ LABEL org.opencontainers.image.authors="Jörn Krenzer <container@joern.krenzer.s
 LABEL org.opencontainers.image.licenses="LGPL-3.0-or-later"
 LABEL org.opencontainers.image.source="https://gitlab.krenzer.space/software/plucogen/core"
 LABEL org.opencontainers.image.url="https://gitlab.krenzer.space/software/plucogen/core"
-LABEL org.opencontainers.image.version="0.0.2"
+LABEL org.opencontainers.image.version="0.0.3"
 
 ENV WORK_DIR=${WORK_DIR}
 ENV CACHE_DIR=${CACHE_DIR}
