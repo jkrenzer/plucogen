@@ -1,30 +1,51 @@
+from pathlib import Path
+from click import Choice
+from typer import Option
+from typing import Annotated, Optional
 from plucogen import logging
+from plucogen.api.v0 import Registry
 
-from .parser import parse_args
+from .api import Interface
 
 log = logging.getLogger(__name__)
 
+app = Interface.app
 
-def main(args=None):
-    options = parse_args(args)
+@app.callback()
+def root(
+    config: Annotated[Optional[Path], Option(
+        help="Path to the config-file to load"
+    )] = None,
+    log_level: Annotated[
+        str,
+        Option(
+            help="Log-level to run the application with",
+            click_type=Choice(logging.LogLevels._member_names_, case_sensitive=False),
+            show_default=True,
+        ),
+    ] = logging.LogLevels.info.name,
 
+    verbose: Annotated[bool, Option(
+        help="Output verbose information"
+    )] = False,
+):
     # Set loglevel
-    log_level = logging.log_levels[options.log_level.lower()]
-    logging.basicConfig(level=log_level)
+    log_level_int = logging.LogLevels[log_level]
+    logging.basicConfig(level=log_level_int)
     log.info("Started logging. Messages above where buffered since program startup.")
 
-    # Try to execute user command
-    try:
-        return options.func(options)
-    except KeyboardInterrupt:  # pragma: no cover
-        log.info("Keyboard interrupt issued. Abort.")
-        return 0
-    except:  # pragma: no cover
-        log.exception("Exception occured!")
-        return 1
+
+@app.command()
+def core_info() -> None:
+    print("Core Registry:")
+    apis = Registry.get_all_apis()
+    for name, interface in apis.items():
+        print(f"{name}: {repr(interface)}, {interface.module}")
+
+
+def main():
+    return app()
 
 
 if __name__ == "__main__":  # pragma: no cover
-    import sys
-
-    sys.exit(main(sys.argv[1:]))
+    main()

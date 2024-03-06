@@ -1,14 +1,11 @@
-from abc import abstractmethod
-
-from plucogen.api.v0 import api as _api
-
-
-class Interface(_api.InterfaceBase):
-    from .parser import subParsers
+from ast import In
+from socket import inet_ntoa
+from plucogen.api.v0.cli import Interface as _Interface
 
 
-Registry = _api.create_interface_registry(
-    InterfaceT=Interface, module=__name__, forbidden_names=set()
-)
+class Interface(_Interface):
+    name = "core"
+    pass
 
-entrypoints = Registry.entrypoints
+
+Interface.register()
