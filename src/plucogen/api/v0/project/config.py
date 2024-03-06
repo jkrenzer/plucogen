@@ -15,11 +15,11 @@ from plucogen.api.v0.resource import (
 
 class ApiDeclaration(BaseModel):
     version: Literal[0] = 0
-    type: Literal["project"] = "project"
+    type: Literal["plucogen.v0.project"] = "plucogen.v0.project"
 
 
 class Configuration(BaseModel):
-    api: ApiDeclaration
+    api: ApiDeclaration = Field(default_factory=ApiDeclaration)
     base_dir: Path = Path(".")
     build_dir: AnyPath = PathTemplate("./build")
     play_books: List[Union[AnyResource, Playbook]] = [

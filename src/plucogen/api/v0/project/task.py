@@ -1,35 +1,16 @@
 from typing import Any, Dict, List, Literal, Union, Optional
 
-from pydantic import Field, model_validator
+from pydantic import Field
 
 from plucogen.api.v0.pydantic import BaseModel
 from plucogen.api.v0.resource import AnyResource
 
+from .action import Action
+
 
 class ApiDeclaration(BaseModel):
     version: Literal[0] = 0
-    type: Literal["task"] = "task"
-
-
-class Action(BaseModel):
-    module: str
-    parameters: Dict[str, Union[str, Any]]
-    name: Optional[str]
-    description: Optional[str]
-
-    @model_validator(mode="before")
-    @classmethod
-    def validate_short_form(cls, data: Any) -> Any:
-        """This validator recognized a short form of the Action model."""
-        if isinstance(data, dict):
-            if len(data.keys()) == 1 and isinstance(list(data.values())[0], dict):
-                new_data = {
-                    "module": list(data.keys())[0],
-                    "parameters": list(data.values())[0],
-                }
-                return new_data
-        else:
-            return data
+    type: Literal["plucogen.v0.task"] = "plucogen.v0.task"
 
 
 class Task(BaseModel):
