@@ -28,8 +28,11 @@ poethepoet = "^0.25.0"
 plucogen = "plucogen.cli.__main__:main"
 
 [tool.poetry.plugins]
-[tool.poetry.plugins."plucogen.plugin.generators"]
+[tool.poetry.plugins."plucogen.api.v0.generators"]
 "generatorArgParsers" = "plucogen.generators:generatorParsers"
+
+[tool.poetry.plugins."plucogen.api.v0.consumer"]
+"file" = "plucogen.consumers.file:Interface"
 
 [tool.poe]
 poetry_command = "do"
