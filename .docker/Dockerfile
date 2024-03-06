@@ -37,7 +37,7 @@ ENV WORK_DIR=${WORK_DIR}
 ENV CACHE_DIR=${CACHE_DIR}
 COPY --from=installer /usr/local /usr/local
 COPY ./* ${WORK_DIR}
-RUN poetry install --with=dev
+RUN poetry install --with=dev --all-extras
 
 FROM dev AS vscode-dev
 ARG WORK_DIR
