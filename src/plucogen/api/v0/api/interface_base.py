@@ -63,5 +63,9 @@ class InterfaceBase(object):
     def import_module(cls) -> ModuleType:
         return cls.get_registry().import_module(cls.module)
 
+    @classmethod
+    def register(cls) -> None:
+        cls.get_registry().register_api(cls)
+
 
 from .interface_registry import InterfaceRegistry
