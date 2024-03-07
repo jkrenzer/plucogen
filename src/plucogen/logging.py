@@ -2,22 +2,21 @@ import logging
 from enum import Enum
 from functools import update_wrapper
 from inspect import signature
-
 from logging import (
     Logger,
     RootLogger,
+    StreamHandler,
     basicConfig,
     getLogger,
-    RootLogger,
     handlers,
     root,
-    StreamHandler,
     shutdown,
 )
 from typing import TYPE_CHECKING
 
 logging.captureWarnings(True)
 logging.basicConfig()
+
 
 class LogLevels(int, Enum):
     notset = logging.NOTSET

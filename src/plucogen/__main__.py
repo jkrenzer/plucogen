@@ -1,8 +1,8 @@
 import sys
 from uu import Error
 
-from .cli.__main__ import main
 from . import logging
+from .cli.__main__ import main
 
 log = logging.getLogger(__name__)
 

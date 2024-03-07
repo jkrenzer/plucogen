@@ -1,5 +1,5 @@
 _module_name = __name__
-from . import logging
+from . import api, logging
 
 log = logging.getLogger(__name__)
 
@@ -11,3 +11,7 @@ except ImportError as e:
     log.exception("Unable to import all modules. Emergency stop.")
 finally:
     logging.shutdown()
+
+
+def _is_defined() -> bool:
+    return True
