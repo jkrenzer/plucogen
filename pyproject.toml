@@ -17,6 +17,7 @@ jsonschema = { extras = ["format"], version = "^4.17.3" }
 pydantic = "^2.5.3"
 typer = "^0.9.0"
 rich = { version = "^13.7.1", optional = true }
+dpath = "^2.1.6"
 
 [tool.poetry.group.dev.dependencies]
 coverage   = "^7.2.7"
@@ -35,6 +36,9 @@ plucogen = "plucogen.cli.__main__:main"
 
 [tool.poetry.plugins."plucogen.api.v0.consumer"]
 "file" = "plucogen.consumers.file:Interface"
+
+[tool.poetry.plugins."plucogen.v0.action"]
+"python" = "plucogen.python.action:Interface"
 
 [tool.poe]
 poetry_command = "do"

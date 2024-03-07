@@ -212,6 +212,17 @@ files = [
 toml = ["tomli"]
 
 [[package]]
+name = "dpath"
+version = "2.1.6"
+description = "Filesystem-like pathing and searching for dictionaries"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "dpath-2.1.6-py3-none-any.whl", hash = "sha256:31407395b177ab63ef72e2f6ae268c15e938f2990a8ecf6510f5686c02b6db73"},
+    {file = "dpath-2.1.6.tar.gz", hash = "sha256:f1e07c72e8605c6a9e80b64bc8f42714de08a789c7de417e49c3f87a19692e47"},
+]
+
+[[package]]
 name = "fqdn"
 version = "1.4.0"
 description = "Validate fully-qualified domain names compliant to RFC 1035 and the preferred form in RFC 3686 s. 2."
@@ -1029,4 +1040,4 @@ tests = ["pytest", "pytest-cov"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.11"
-content-hash = "2ee7f0dff41354704ade88bab2efccadad03054944142af1fab2e86a227e3c47"
+content-hash = "6b7167ffae00fb47d4615fe01391e7d9f7db3be7d0ced31a17b58fc6afc049cc"
