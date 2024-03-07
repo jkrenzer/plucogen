@@ -5,11 +5,9 @@ from typing import Annotated, Optional
 from plucogen import logging
 from plucogen.api.v0 import Registry
 
-from .api import Interface
+from .api import app
 
 log = logging.getLogger(__name__)
-
-app = Interface.app
 
 @app.callback()
 def root(
@@ -33,14 +31,6 @@ def root(
     log_level_int = logging.LogLevels[log_level]
     logging.basicConfig(level=log_level_int)
     log.info("Started logging. Messages above where buffered since program startup.")
-
-
-@app.command()
-def core_info() -> None:
-    print("Core Registry:")
-    apis = Registry.get_all_apis()
-    for name, interface in apis.items():
-        print(f"{name}: {repr(interface)}, {interface.module}")
 
 
 def main():
