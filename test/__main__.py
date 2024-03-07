@@ -24,7 +24,7 @@ rootParser.add(
     "--log-level",
     default="debug",
     help="set loglevel",  # type: ignore
-    choices=logging.log_levels,
+    choices=logging.LogLevels,
 )
 rootParser.add("-v", "--verbose", help="be verbose", action="count", default=0)  # type: ignore
 rootParser.add("-t", "--tap", help="output results in TAP protocol", action="store_true")  # type: ignore
@@ -46,7 +46,7 @@ if __name__ == "__main__":
     )
 
     # Set loglevel
-    logging.basicConfig(level=logging.log_levels[options.log_level.lower()])
+    logging.basicConfig(level=logging.LogLevels[options.log_level.lower()])
 
     if options.tap:
         from pycotap import TAPTestRunner
