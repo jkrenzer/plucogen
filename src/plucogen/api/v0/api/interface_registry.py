@@ -29,7 +29,7 @@ class InterfaceRegistry:
     _parent: Union[Type["InterfaceRegistry"], None] = None
     _children: List[Type["InterfaceRegistry"]] = list()
 
-    _sub_apis: Dict[str, "InterfaceBase"] = dict()
+    _sub_apis: Dict[str, Type["InterfaceBase"]] = dict()
 
     @classmethod
     def register_entry_points(cls) -> None:
@@ -200,7 +200,7 @@ class InterfaceRegistry:
             )
 
     @classmethod
-    def get_apis(cls):
+    def get_apis(cls) -> Dict[str, Type["InterfaceBase"]]:
         cls.register_entry_points()
         return copy.copy(cls._sub_apis)
 

@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from plucogen.api.v0.api import InterfaceBase as _ApiI
 from plucogen.api.v0.api import create_interface_registry
 
-from .base import Interface as BaseInterface
+from .base import Interface as _Interface
 
 
 @dataclass
@@ -16,12 +16,12 @@ class _ApiInterface(_ApiI):
 _ApiInterface.register()
 
 
-class Interface(BaseInterface):
+class Interface(_Interface):
     from .generator import Interface as GeneratorInterface
 
     InputData = GeneratorInterface.OutputData
 
-    OutputData = BaseInterface.OutputData
+    OutputData = _Interface.OutputData
 
     @classmethod
     @abstractmethod

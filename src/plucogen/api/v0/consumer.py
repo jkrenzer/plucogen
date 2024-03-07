@@ -9,12 +9,12 @@ from plucogen.api.v0.api import create_interface_registry
 from plucogen.logging import getLogger
 
 from .base import DataList
-from .base import Interface as BaseInterface
+from .base import Interface as _Interface
 
 log = getLogger(__name__)
 
 
-class Interface(BaseInterface):
+class Interface(_Interface):
     """
     Interface for consumers, which consume resources and
     output a data object with information derived from the
@@ -25,7 +25,7 @@ class Interface(BaseInterface):
     module = __name__
 
     @dataclass
-    class InputData(BaseInterface.InputData):
+    class InputData(_Interface.InputData):
         """
         Consumer input data are pointers to resources, e.g.
         paths to files or URLs.
@@ -34,7 +34,7 @@ class Interface(BaseInterface):
         resources: List[Union[Path, Url]]
 
     @dataclass
-    class OutputData(BaseInterface.OutputData):
+    class OutputData(_Interface.OutputData):
         data: DataList
         Data = DataList
 

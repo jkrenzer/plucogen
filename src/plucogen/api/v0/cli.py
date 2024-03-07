@@ -1,15 +1,16 @@
 from abc import abstractmethod
 from typer import Typer
+from typing import Union
 
 from plucogen.api.v0.api import create_interface_registry
 from plucogen.logging import getLogger
 
-from .base import Interface as BaseInterface
+from .base import Interface as _Interface
 
 log = getLogger(__name__)
 
 
-class Interface(BaseInterface):
+class Interface(_Interface):
     """
     Interface for cli options and arguments
     presented to the user
@@ -17,11 +18,12 @@ class Interface(BaseInterface):
 
     name = "cli"
     module = __name__
-    app: Typer = Typer()
 
-    @classmethod
-    def run(cls) -> int:
-        return cls.app()
+    def __init_subclass__(cls, *args, **kwargs):
+        if not hasattr(cls, 'app')  or not isinstance(cls.app, Typer):
+            raise NotImplementedError(
+                "Class attribute 'app' must be set to a Typer instance!"
+            )
 
 
 Registry = create_interface_registry(
