@@ -1,5 +1,6 @@
-from typing import List, Union
 from itertools import zip_longest
+from typing import List, Union
+
 from plucogen.logging import getLogger
 
 log = getLogger(__name__)

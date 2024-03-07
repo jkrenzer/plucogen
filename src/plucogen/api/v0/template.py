@@ -1,8 +1,7 @@
 from typing import Any
 
 from jinja2 import Environment
-from pydantic import (GetCoreSchemaHandler, GetJsonSchemaHandler,
-                      GetPydanticSchema)
+from pydantic import GetCoreSchemaHandler, GetJsonSchemaHandler, GetPydanticSchema
 from pydantic_core import CoreSchema, core_schema
 
 

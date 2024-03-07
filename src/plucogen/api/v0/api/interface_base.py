@@ -1,12 +1,11 @@
 import copy
-from multiprocessing import Value
-from os import PathLike
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from inspect import isabstract, isclass
+from multiprocessing import Value
+from os import PathLike
 from types import ModuleType
-from typing import Dict, List, Set, Union, Type
-
+from typing import Dict, List, Set, Type, Union
 
 from pkg_resources import load_entry_point
 
@@ -16,7 +15,6 @@ from plucogen.api.v0 import _module_name
 from plucogen.logging import getLogger
 
 from .module_path import ModulePath
-
 
 log = getLogger(__name__)
 

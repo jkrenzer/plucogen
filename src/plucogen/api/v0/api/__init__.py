@@ -2,9 +2,9 @@ from plucogen import api as _api
 from plucogen.api.v0 import _module_name
 from plucogen.logging import getLogger
 
-from .module_path import ModulePath
 from .interface_base import InterfaceBase
 from .interface_registry import InterfaceRegistry
+from .module_path import ModulePath
 
 log = getLogger(__name__)
 

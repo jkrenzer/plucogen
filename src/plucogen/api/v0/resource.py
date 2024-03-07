@@ -1,13 +1,14 @@
+from os import PathLike
 from pathlib import Path
 from typing import Annotated, Any, List, Union
 
-from os import PathLike
 from jinja2.environment import Environment, Template
-from pydantic import GetPydanticSchema, GetCoreSchemaHandler, GetJsonSchemaHandler
-from pydantic_core import core_schema, CoreSchema
-from pydantic.networks import AnyUrl
+from pydantic import GetCoreSchemaHandler, GetJsonSchemaHandler, GetPydanticSchema
+from pydantic.networks import AnyUrl as Url
+from pydantic_core import CoreSchema, core_schema
 
 from plucogen.logging import getLogger
+
 from .api.module_path import ModulePath as _ModulePath
 
 Paths = List[Path]
@@ -78,6 +79,7 @@ class ModulePath(_ModulePath):
 
 AnyPath = Union[Path, PathTemplate]
 UrlTemplate = Annotated[str, _HandleAsStr]
+AnyUrl = Union[Url, UrlTemplate]
 Resource = Union[AnyPath, AnyUrl]
 ResourceTemplate = Union[PathTemplate, UrlTemplate]
 AnyResource = Union[Resource, ResourceTemplate]

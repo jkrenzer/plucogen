@@ -1,16 +1,19 @@
 from typing import cast
+
 from typer import Typer
 
-from plucogen.logging import getLogger
 from plucogen.api.v0.cli import Interface as _Interface
+from plucogen.logging import getLogger
 
 log = getLogger(__name__)
 
 app = Typer()
 
+
 class Interface(_Interface):
     name = "core"
     app = app
+
 
 Interface.register()
 

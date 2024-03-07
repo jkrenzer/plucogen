@@ -1,11 +1,10 @@
 import copy
-from multiprocessing import Value
-from os import PathLike
 from dataclasses import dataclass
 from inspect import isabstract, isclass
+from multiprocessing import Value
+from os import PathLike
 from types import ModuleType
-from typing import Dict, List, Set, Union, Type
-
+from typing import Dict, List, Set, Type, Union
 
 from pkg_resources import load_entry_point
 
@@ -15,7 +14,6 @@ from plucogen.api.v0 import _module_name
 from plucogen.logging import getLogger
 
 from .module_path import ModulePath
-
 
 log = getLogger(__name__)
 
@@ -57,7 +55,7 @@ class InterfaceRegistry:
         assert isinstance(cls.forbidden_names, set)
         assert cls.interface is not None
         if cls.entrypoints is None:
-            cls.entrypoints = _api.entrypoints.create_entrypoints(cls.module)
+            cls.entrypoints = _api.entrypoints.create_entrypoints(cls.path.as_str)
         cls.register_entry_points()
         return super.__new__(cls)
 
@@ -312,7 +310,7 @@ class InterfaceRegistry:
                 "module": module,
                 "path": path,
                 "_parent": cls,
-                "entrypoints": _api.entrypoints.create_entrypoints(module),
+                "entrypoints": _api.entrypoints.create_entrypoints(str(path)),
                 "_children": list(),
                 "forbidden_names": forbidden_names,
                 "_sub_apis": dict(),

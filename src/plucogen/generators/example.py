@@ -1,7 +1,7 @@
 from plucogen.handlers.yaml import tags
-from .cli import generatorParsers
 
 from .. import logging
+from .cli import generatorParsers
 
 log = logging.getLogger(__name__)
 

@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from importlib import metadata
-from typing import List, Tuple, Union, Type
+from typing import List, Tuple, Type, Union
 
 from plucogen.logging import getLogger
 

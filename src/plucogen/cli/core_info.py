@@ -1,13 +1,17 @@
 from typer import Typer
-from plucogen.api.v0 import cli, Registry
+
+from plucogen.api.v0 import Registry, cli
 
 app = Typer(help="Dump core informations")
+
 
 class Interface(cli.Interface):
     name = "core-info"
     app = app
 
+
 Interface.register()
+
 
 @app.callback(invoke_without_command=True)
 def main() -> None:
