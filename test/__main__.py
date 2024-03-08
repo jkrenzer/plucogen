@@ -24,7 +24,7 @@ rootParser.add(
     "--log-level",
     default="debug",
     help="set loglevel",  # type: ignore
-    choices=logging.LogLevels,
+    choices=logging.LogLevels._member_names_,
 )
 rootParser.add("-v", "--verbose", help="be verbose", action="count", default=0)  # type: ignore
 rootParser.add("-t", "--tap", help="output results in TAP protocol", action="store_true")  # type: ignore
