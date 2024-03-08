@@ -40,6 +40,9 @@ plucogen = "plucogen.cli.__main__:main"
 [tool.poetry.plugins."plucogen.v0.action"]
 "python" = "plucogen.python.action:Interface"
 
+[tool.poetry.plugins."plucogen.v0.cli"]
+"action" = "plucogen.api.v0.project.action.cli:Interface"
+
 [tool.poe]
 poetry_command = "do"
 
