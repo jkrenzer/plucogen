@@ -53,14 +53,13 @@ def main():
     try:
         result = app()
     except SystemExit as e:
-        pass
-    end = timer()
-    global _time_execution
-    if _time_execution:
-        echo(f"Preparation time: {start-_preparation_timer}")
-        echo(f"Execution time: {end-start}s")
-        echo(f"Total time: {end-_preparation_timer}s")
-    return result
+        end = timer()
+        global _time_execution
+        if _time_execution:
+            echo(f"Preparation time: {start-_preparation_timer}")
+            echo(f"Execution time: {end-start}s")
+            echo(f"Total time: {end-_preparation_timer}s")
+        raise e
 
 
 if __name__ == "__main__":  # pragma: no cover
