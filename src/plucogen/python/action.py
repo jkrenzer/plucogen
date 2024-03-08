@@ -3,7 +3,7 @@ from typing import Any, Dict, List
 
 from pydantic import Field, validate_call
 
-from plucogen.api.v0.project.action import Interface as _Interface
+from plucogen.api.v0.project.action.api import Interface as _Interface
 
 
 def execute(
