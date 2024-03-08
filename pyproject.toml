@@ -50,6 +50,10 @@ poetry_command = "do"
 cmd  = "python -m test --log-level debug"
 help = "Run tests for the package"
 
+[tool.poe.tasks.clear-cache]
+shell = 'find . | grep -E "(/__pycache__$|\.pyc$|\.pyo$)" | xargs rm -rf'
+help = "Clear all python caches"
+
 [build-system]
 requires      = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
