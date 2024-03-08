@@ -5,7 +5,7 @@ from pydantic import Field, validate_call
 from plucogen.api.v0.pydantic import BaseModel
 from plucogen.api.v0.resource import AnyResource, AnyUrl, Path, PathTemplate
 
-from .action import Action
+from .action.api import Action
 from .context import Context
 
 
@@ -45,14 +45,13 @@ class Playbook(BaseModel):
                 )
             elif isinstance(action, AnyUrl):
                 raise NotImplementedError(
-                    "Loading of information from Urls is currently not implemented!"
+                    "Loading of information from Url is currently not implemented!"
                 )
             else:
                 raise ValueError("Invalid action value!")
-        results = {}
         for n, action in enumerate(actions):
             context.path = ("actions", n)
-            results[n] = action.execute(context)
+            context.results[n][n] = action.execute(context)
             if action.name:
-                results[action.name] = results[n]
-        return results
+                context.results[action.name] = context.results[n]
+        return context.results
