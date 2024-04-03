@@ -13,5 +13,6 @@
     "evenBetterToml.formatter.arrayAutoCollapse": true,
     "python.analysis.typeCheckingMode": "basic",
     "python.analysis.autoImportCompletions": true,
-    "isort.importStrategy": "fromEnvironment"
+    "isort.importStrategy": "fromEnvironment",
+    "editor.defaultFormatter": "ms-python.black-formatter"
 }
