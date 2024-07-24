@@ -51,7 +51,7 @@ class Playbook(BaseModel):
                 raise ValueError("Invalid action value!")
         for n, action in enumerate(actions):
             context.path = ("actions", n)
-            context.results[n][n] = action.execute(context)
+            context.results[n] = action.execute(context)
             if action.name:
                 context.results[action.name] = context.results[n]
         return context.results
