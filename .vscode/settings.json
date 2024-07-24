@@ -14,5 +14,12 @@
     "python.analysis.typeCheckingMode": "basic",
     "python.analysis.autoImportCompletions": true,
     "isort.importStrategy": "fromEnvironment",
-    "editor.defaultFormatter": "ms-python.black-formatter"
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "python.testing.unittestArgs": [
+        "-v",
+        "test"
+    ],
+    "python.testing.pytestEnabled": false,
+    "python.testing.unittestEnabled": true,
+    "python.analysis.enablePytestSupport": false
 }
