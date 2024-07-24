@@ -7,7 +7,7 @@ from plucogen.api.v0.resource import ModulePath
 
 from .api import Action
 
-app = Typer()
+app = Typer(help="Execute an action")
 
 
 class Interface(_CliInterface):
