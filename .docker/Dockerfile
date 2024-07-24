@@ -36,7 +36,7 @@ ARG CACHE_DIR
 ENV WORK_DIR=${WORK_DIR}
 ENV CACHE_DIR=${CACHE_DIR}
 COPY --from=installer /usr/local /usr/local
-COPY ./* ${WORK_DIR}
+COPY ./* ${WORK_DIR}/
 RUN poetry install --with=dev --all-extras
 
 FROM dev AS vscode-dev
@@ -47,5 +47,6 @@ ENV CACHE_DIR=${CACHE_DIR}
 ENV EDITOR="code --wait"
 RUN git config --global core.editor "${EDITOR}" && \
   git config pull.rebase true
+
 
 FROM dev as final
