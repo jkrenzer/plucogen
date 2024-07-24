@@ -155,7 +155,7 @@ class TestTagInclude(TestCase):
             )
 
     def test_schema_validation(self):
-        from jsonschema import ValidationError
+        from jsonschema.exceptions import ValidationError
 
         reference_file = os.path.join(current_dir, "test_include.yaml")
         with self.assertRaises(ValidationError):
