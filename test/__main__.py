@@ -45,8 +45,8 @@ if __name__ == "__main__":
         sys.modules[__name__], pattern=options.pattern
     )
 
-    # Set loglevel
-    logging.basicConfig(level=logging.LogLevels[options.log_level.lower()])
+    # Set loglevel quiet during setup
+    logging.basicConfig(level=9999)
 
     if options.tap:
         from pycotap import TAPTestRunner
@@ -62,6 +62,10 @@ if __name__ == "__main__":
 
         cov = Coverage(branch=True)
         cov.start()
+        # Set requested loglevel for run
+        logging.getLogger(name=None).setLevel(
+            level=logging.LogLevels[options.log_level.lower()]
+        )
         testRunner.run(tests)
         cov.stop()
         if options.coverage_report == "html":
@@ -83,4 +87,8 @@ if __name__ == "__main__":
                 outfile=str(options.coverage_output),
             )
     else:
+        # Set requested loglevel for run
+        logging.getLogger(name=None).setLevel(
+            level=logging.LogLevels[options.log_level.lower()]
+        )
         testRunner.run(tests)
