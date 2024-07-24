@@ -5,8 +5,8 @@ from pydantic import Field, validate_call
 from plucogen.api.v0.pydantic import BaseModel
 from plucogen.api.v0.resource import AnyResource, AnyUrl, Path, PathTemplate
 
-from .action.api import Action
-from .context import Context
+from ..action import Action
+from ..context import Context
 
 
 class ApiDeclaration(BaseModel):
