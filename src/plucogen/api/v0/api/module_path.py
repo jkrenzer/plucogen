@@ -1,15 +1,15 @@
+import re
 from itertools import zip_longest
-from typing import List, Union
+from typing import List, Tuple, Union, cast
 
 from plucogen.logging import getLogger
 
 log = getLogger(__name__)
 
-str
-
 
 class ModulePath(object):
     separator: str = "."
+    pattern: re.Pattern = re.compile(r"[\d\w]+(\.[\d\w])*")
 
     @classmethod
     def _enforce_absolute(cls, path: List[str]) -> List[str]:
@@ -49,11 +49,17 @@ class ModulePath(object):
         self._path: List[str] = list()
         log.debug("Building ModulePath from %s", args)
         if all(map(lambda a: isinstance(a, str), args)):
+            args = cast(tuple[str, ...], args)
             if len(args) > 1:
-                self._path = self._rectify(args)
+                self._path = self._rectify(list(args))
             elif len(args) == 1:
                 if len(args[0]) > 0:
-                    self._path = self.split_str(args[0])
+                    if self.validate_string(args[0]):
+                        self._path = self.split_str(args[0])
+                    else:
+                        raise ValueError(
+                            f"String '{args[0]}' is not a valid module path!"
+                        )
         elif len(args) == 1 and isinstance(args[0], self.__class__):
             self._path = self._rectify(args[0]._path)
         log.debug("Analysis yielded structure %s", self._path)
@@ -120,3 +126,8 @@ class ModulePath(object):
             return self.subtract(other, strict=False)
         else:
             return self
+
+    @classmethod
+    def validate_string(cls, string: str) -> bool:
+        pattern = re.compile(r"[\d\w]+(\.[\d\w])*")
+        return True if re.fullmatch(pattern, string) else False
